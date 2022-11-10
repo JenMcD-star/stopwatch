@@ -56,7 +56,7 @@ function reset() {
 function tick() {
   milliseconds++;
   myTimer = setTimeout(tick, 1);
-  if (milliseconds > 999) {
+  if (milliseconds > 99) {
     milliseconds = 0;
     seconds += 1;
   }
