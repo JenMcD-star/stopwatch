@@ -5,26 +5,25 @@ const hoursDisplay = document.getElementById("hours");
 const minutesDisplay = document.getElementById("minutes");
 const secondsDisplay = document.getElementById("seconds");
 const millisecondsDisplay = document.getElementById("milliseconds");
-const watchDisplay =
-  hoursDisplay + minutesDisplay + secondsDisplay + millisecondsDisplay;
 
 let hours = 0;
 let minutes = 0;
 let seconds = 0;
 let milliseconds = 0;
+let myTimer;
 
+/*had to look this part up. The way I tried kept adding zeros each time the number increased
+ I had the ternary operator seperate from the innerHTML variable. 
+ I did have to adapt the code the I found.
+*/
 function display() {
-  hours < 10 ? (hours = "0" + hours) : (hours = hours);
-  minutes < 10 ? (minutes = "0" + minutes) : (minutes = minutes);
-  seconds < 10 ? (seconds = "0" + seconds) : (seconds = seconds);
-  milliseconds < 10 ? (milliseconds = "0" + milliseconds): (milliseconds = milliseconds);
-  hoursDisplay.innerHTML = `${hours}:`;
-  minutesDisplay.innerHTML = `${minutes}:`;
-  secondsDisplay.innerHTML = `${seconds}:`;
-  millisecondsDisplay.innerHTML = `${milliseconds}`;
+  hoursDisplay.innerHTML = (hours < 10 ? "0" : "") + String(hours) + ":";
+  minutesDisplay.innerHTML = (minutes < 10 ? "0" : "") + String(minutes) + ":";
+  secondsDisplay.innerHTML = (seconds < 10 ? "0" : "") + String(seconds) + ":";
+  millisecondsDisplay.innerHTML =
+    (milliseconds < 10 ? "0" : "") + String(milliseconds);
 }
 
-display();
 /* 
 1000 milliseconds in a second
 60 seconds in a minute
@@ -36,17 +35,39 @@ resetButton.addEventListener("click", reset);
 
 function start() {
   console.log("start has been clicked");
+  tick();
 }
 
 function stop() {
   console.log("stop has been clicked");
+  clearTimeout(myTimer);
 }
 
 function reset() {
   console.log("resets been clicked");
-  milliseconds = 00;
-  seconds = 00;
-  minutes = 00;
-  hours = 00;
+  milliseconds = 0;
+  seconds = 0;
+  minutes = 0;
+  hours = 0;
+  display();
+  stop();
+}
+
+function tick() {
+  milliseconds++;
+  myTimer = setTimeout(tick, 1);
+  if (milliseconds > 999) {
+    milliseconds = 0;
+    seconds += 1;
+  }
+  if (seconds > 59) {
+    seconds = 0;
+    minutes += 1;
+  }
+  if (minutes > 59) {
+    minutes = 0;
+    hours += 1;
+  }
   display();
 }
+display();
